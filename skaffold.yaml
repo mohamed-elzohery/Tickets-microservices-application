@@ -3,7 +3,8 @@ kind: Config
 deploy:
   kubectl:
     manifests:
-      - infra/k8s/*
+      - ./infra/k8s/auth-depl.yaml
+      - ./infra/k8s/ingress-srv.yaml
 build:
   local:
     push: false
