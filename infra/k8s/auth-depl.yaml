@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: auth
-        image: melzohery/auth 
+        image: gcr.io/secure-racer-348221/auth
 ---
 apiVersion: v1
 kind: Service

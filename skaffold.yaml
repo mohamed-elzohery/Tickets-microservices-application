@@ -6,10 +6,12 @@ deploy:
       - ./infra/k8s/auth-depl.yaml
       - ./infra/k8s/ingress-srv.yaml
 build:
-  local:
-    push: false
+  # local:
+  #   push: false
+  googleCloudBuild:
+    projectId: secure-racer-348221
   artifacts:
-    - image: melzohery/auth
+    - image: gcr.io/secure-racer-348221/auth
       context: auth
       docker:
         dockerfile: Dockerfile
