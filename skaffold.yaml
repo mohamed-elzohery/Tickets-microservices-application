@@ -3,7 +3,7 @@ kind: Config
 deploy:
   kubectl:
     manifests:
-      - ./infra/k8s/*
+      - infra/k8s/*
 build:
   local:
     push: false
@@ -11,8 +11,8 @@ build:
     - image: melzohery/auth
       context: auth
       docker:
-        dockerfile: "Dockerfile"
+        dockerfile: Dockerfile
       sync:
         manual:
           - dest: .
-            src: ./src/**/*.ts
+            src: './src/**/*.js'
