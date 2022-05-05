@@ -3,11 +3,11 @@ kind: Deployment
 metadata:
   name: auth-depl
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: auth
   template:
+    replicas: 1
     metadata:
       labels:
         app: auth
@@ -25,6 +25,6 @@ spec:
     app: auth
   ports:
   - port: 5000
-    name: auth
-    protocol: TCP
     targetPort: 5000
+    name: 'auth'
+    protocol: TCP

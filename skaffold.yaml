@@ -1,0 +1,18 @@
+apiVersion: skaffold/v2beta22
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+build:
+  local:
+    push: false
+  artifacts:
+    - image: melzohery/auth
+      context: auth
+      docker:
+        dockerfile: "Dockerfile"
+      sync:
+        manual:
+          - dest: .
+            src: ./src/**/*.ts
