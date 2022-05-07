@@ -5,13 +5,14 @@ deploy:
     manifests:
       - ./infra/k8s/auth-depl.yaml
       - ./infra/k8s/ingress-srv.yaml
+      - ./infra/k8s/auth-mongo-depl.yaml
 build:
-  # local:
-  #   push: false
-  googleCloudBuild:
-    projectId: secure-racer-348221
+  local:
+    push: false
+  # googleCloudBuild:
+  #   projectId: secure-racer-348221
   artifacts:
-    - image: gcr.io/secure-racer-348221/auth
+    - image: melzohery/auth
       context: auth
       docker:
         dockerfile: Dockerfile

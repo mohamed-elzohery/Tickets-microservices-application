@@ -2,8 +2,7 @@ import { Router } from "express";
 
 const router = Router();
 router.get('/currentuser', (req, res) => {
-    console.log("Hit");
-    return res.send({currentUser: 'Admin'});
+    return res.send({currentUser: 'Admins'});
 });
 
 export {router as authRouter};

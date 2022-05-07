@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: auth-depl
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: auth
@@ -13,7 +14,7 @@ spec:
     spec:
       containers:
       - name: auth
-        image: gcr.io/secure-racer-348221/auth
+        image: melzohery/auth
 ---
 apiVersion: v1
 kind: Service
@@ -25,5 +26,5 @@ spec:
   ports:
   - port: 5000
     targetPort: 5000
-    name: 'auth'
+    name: auth
     protocol: TCP
