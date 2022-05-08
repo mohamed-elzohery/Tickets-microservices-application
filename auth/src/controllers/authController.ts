@@ -16,7 +16,7 @@ const login = catchAysnc(async (req:Request, res:Response, next: NextFunction) =
         return next(new ErrorResponse(400, 'Please enter email and password.', 'LoginErr'));
     }
     const user: any = await User.findOne({email});
-    if(user !== null && user.isPasswordsMatched(enteredPassword)){
+    if(!(user !== null && await user.isPasswordsMatched(enteredPassword))){
         return next(new ErrorResponse(400, 'Invalid email or password.', 'LoginErr'))
     }
     const token = user.createToken();
@@ -26,7 +26,7 @@ const login = catchAysnc(async (req:Request, res:Response, next: NextFunction) =
 const signout = () => {}
 
 const getCurrentUser = () => {
-    
+
 }
 
 

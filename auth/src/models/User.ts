@@ -12,7 +12,7 @@ const userSchema = new Schema<UserI>({
     username: {
         type: String,
         minlength: [3, 'username must be 3 chars at least.'],
-        required: [true, 'Email is required.'],
+        required: [true, 'Username is required.'],
         maxlength: [30, 'username cannot be more than 30 chars long.']
     },
     email: {
@@ -42,8 +42,8 @@ userSchema.pre('save', async function(next){
 
 //  Schema instances methods
 userSchema.methods.createToken = function(){
-    return jwt.sign({id: this._id}, process.env.JWT_SECRET , {
-        expiresIn: process.env.JWT_EXPIRY
+    return jwt.sign({id: this._id}, 'm.zohery1998@gmail.com' , {
+        expiresIn: '2d'
     });
 }
 

@@ -27,4 +27,4 @@ const errorHandler = (err: any, req: Request, res: Response, next: NextFunction)
     res.json({error, success: false});
 }
 
-module.exports = errorHandler;
+export {errorHandler};
