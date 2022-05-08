@@ -1,12 +1,13 @@
 import { Schema, model } from 'mongoose';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-
 interface UserI {
     username: string;
     email: string;
     password: string;
   }
+
+
 
 const userSchema = new Schema<UserI>({
     username: {
@@ -42,8 +43,8 @@ userSchema.pre('save', async function(next){
 
 //  Schema instances methods
 userSchema.methods.createToken = function(){
-    return jwt.sign({id: this._id}, 'm.zohery1998@gmail.com' , {
-        expiresIn: '2d'
+    return jwt.sign({id: this._id}, process.env.JWT_SECRET!, {
+        expiresIn: process.env.JWT_EXPIRE!
     });
 }
 

@@ -1,2 +1,3 @@
 node_modules
-src/environment.d.ts
+env.td.ts
+.env

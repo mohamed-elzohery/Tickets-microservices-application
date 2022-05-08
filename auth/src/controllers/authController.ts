@@ -11,7 +11,7 @@ const register = catchAsync(async (req:Request, res:Response, next: NextFunction
     const token = user.createToken();
     res.cookie('token_uid', token, {
         httpOnly: true,
-        expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
+        expires: new Date(Date.now() + +process.env.JWT_AGE!),
         path: '/'
     });
     res.json({success: true, data: user, token, message: 'User created successfully.'});
@@ -29,7 +29,7 @@ const login = catchAsync(async (req:Request, res:Response, next: NextFunction) =
     const token = user.createToken();
     res.cookie('token_uid', token, {
         httpOnly: true,
-        expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
+        expires: new Date(Date.now() + +process.env.JWT_AGE!),
         path: '/'
     });
     res.json({success: true, data: user, token, message: 'User is logged in successfully.'});
@@ -45,7 +45,7 @@ const getCurrentUser = catchAsync(async (req:Request, res:Response, next: NextFu
    if(!token){
         return res.send({success: true, data: {currentUser: null}, message: 'token is not available.'});
    }
-   const decodedToken:any = jwt.verify(token, 'm.zohery1998@gmail.com');
+   const decodedToken:any = jwt.verify(token, process.env.JWT_SECRET!);
    const id = decodedToken.id;
     if (!id.match(/^[0-9a-fA-F]{24}$/)) {
        return res.send({success: true, data: {currentUser: null}, message: 'token is not valid.'});

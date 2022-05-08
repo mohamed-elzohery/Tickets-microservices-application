@@ -21,7 +21,7 @@ const authGuard = catchAsync(async (req:Request, res:Response, next:NextFunction
     if(!token){
         return next(new ErrorResponse(401, 'Unauthenticated access', 'AuthErr'));
     }
-    const decodedToken:any = jwt.verify(token, 'm.zohery1998@gmail.com');
+    const decodedToken:any = jwt.verify(token, process.env.JWT_SECRET!);
     const id = decodedToken.id;
     const user = await User.findById(id);
     if(!user){
