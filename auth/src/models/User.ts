@@ -53,4 +53,4 @@ userSchema.methods.isPasswordsMatched = async function(enteredPassword: string){
 
 const UserModel = model<UserI>('User', userSchema);
 
-export {UserModel}
+export {UserModel as User}

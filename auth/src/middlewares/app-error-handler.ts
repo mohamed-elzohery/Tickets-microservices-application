@@ -19,7 +19,7 @@ const errorHandler = (err: any, req: Request, res: Response, next: NextFunction)
 
     //handle duplicate key error.
     if(err.code && err.code === 11000){
-        error.message = `${Object.keys(err.keyValue).join('')} is duplicate`,
+        error.message = `${Object.keys(err.keyValue).join('')} is taken`,
         error.code = 400;
     }
 
