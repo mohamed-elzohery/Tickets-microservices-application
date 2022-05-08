@@ -8,4 +8,4 @@ const asyncErrorHandler = (fn: Function) => async (req: Request, res: Response, 
     }
 }
 
-export {asyncErrorHandler as catchAysnc};
+export {asyncErrorHandler as catchAsync};

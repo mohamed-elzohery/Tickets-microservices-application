@@ -1,11 +1,11 @@
-import { catchAysnc } from "../middlewares/async-error-handler";
+import { catchAsync } from "../middlewares/async-error-handler";
 import { ErrorResponse } from "../utils/ErrorResponse";
 import {User} from '../models/User';
 import {Request, Response, NextFunction} from 'express';
 import jwt from 'jsonwebtoken';
 
 
-const register = catchAysnc(async (req:Request, res:Response, next: NextFunction) => {
+const register = catchAsync(async (req:Request, res:Response, next: NextFunction) => {
     const {username, email, password} = req.body;
     const user: any = await User.create({username, email, password});
     const token = user.createToken();
@@ -17,7 +17,7 @@ const register = catchAysnc(async (req:Request, res:Response, next: NextFunction
     res.json({success: true, data: user, token, message: 'User created successfully.'});
 })
 
-const login = catchAysnc(async (req:Request, res:Response, next: NextFunction) => {
+const login = catchAsync(async (req:Request, res:Response, next: NextFunction) => {
     const {email, password: enteredPassword} = req.body;
     if(!(email && enteredPassword)){
         return next(new ErrorResponse(400, 'Please enter email and password.', 'LoginErr'));
@@ -40,7 +40,7 @@ const logout = (req:Request, res:Response, next: NextFunction ) => {
     res.json({success: true, message: 'User is logged out.'});
 }
 
-const getCurrentUser = catchAysnc(async (req:Request, res:Response, next: NextFunction) => {
+const getCurrentUser = catchAsync(async (req:Request, res:Response, next: NextFunction) => {
    const token = req.cookies['token_uid'];
    if(!token){
         return res.send({success: true, data: {currentUser: null}, message: 'token is not available.'});
