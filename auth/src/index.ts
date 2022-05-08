@@ -3,12 +3,13 @@ import { authRouter } from "./routes/authRoutes";
 import dotenv from 'dotenv';
 import {errorHandler} from './middlewares/app-error-handler'
 import mongoose, {connect} from 'mongoose';
+import cookieParser from "cookie-parser";
 
 dotenv.config();
-console.log(process.env.JWT_SECRET)
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 
 mongoose.connect('mongodb://localhost:27017/users', () => {
     console.log('connected to data base');

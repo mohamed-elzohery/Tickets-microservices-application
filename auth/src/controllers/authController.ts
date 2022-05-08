@@ -2,11 +2,18 @@ import { catchAysnc } from "../middlewares/async-error-handler";
 import { ErrorResponse } from "../utils/ErrorResponse";
 import {User} from '../models/User';
 import {Request, Response, NextFunction} from 'express';
+import jwt from 'jsonwebtoken';
+
 
 const register = catchAysnc(async (req:Request, res:Response, next: NextFunction) => {
     const {username, email, password} = req.body;
     const user: any = await User.create({username, email, password});
     const token = user.createToken();
+    res.cookie('token_uid', token, {
+        httpOnly: true,
+        expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
+        path: '/'
+    });
     res.json({success: true, data: user, token, message: 'User created successfully.'});
 })
 
@@ -20,14 +27,34 @@ const login = catchAysnc(async (req:Request, res:Response, next: NextFunction) =
         return next(new ErrorResponse(400, 'Invalid email or password.', 'LoginErr'))
     }
     const token = user.createToken();
+    res.cookie('token_uid', token, {
+        httpOnly: true,
+        expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
+        path: '/'
+    });
     res.json({success: true, data: user, token, message: 'User is logged in successfully.'});
 })
 
-const signout = () => {}
-
-const getCurrentUser = () => {
-
+const logout = (req:Request, res:Response, next: NextFunction ) => {
+    res.clearCookie('token_uid');
+    res.json({success: true, message: 'User is logged out.'});
 }
 
+const getCurrentUser = catchAysnc(async (req:Request, res:Response, next: NextFunction) => {
+   const token = req.cookies['token_uid'];
+   if(!token){
+        return res.send({success: true, data: {currentUser: null}, message: 'token is not available.'});
+   }
+   const decodedToken:any = jwt.verify(token, 'm.zohery1998@gmail.com');
+   const id = decodedToken.id;
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+       return res.send({success: true, data: {currentUser: null}, message: 'token is not valid.'});
+    }
+    const user = await User.findById(decodedToken.id);
+    if(!user){
+    return res.send({success: true, data: {currentUser: null}, message: 'token is not valid.'});
+    }
+    res.send({success: true, data: {currentUser: user}, message: 'valid token'})
+})
 
-export {register, login};
+export {register, login, getCurrentUser, logout};

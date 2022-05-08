@@ -17,6 +17,11 @@ const errorHandler = (err: any, req: Request, res: Response, next: NextFunction)
         error.code = 400
     }
 
+    if(err.name && err.name === 'JsonWebTokenError'){
+        error.message = 'Token is not valid',
+        error.code = 400
+    }
+
     //handle duplicate key error.
     if(err.code && err.code === 11000){
         error.message = `${Object.keys(err.keyValue).join('')} is taken`,
