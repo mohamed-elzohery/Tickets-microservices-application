@@ -14,7 +14,7 @@ const register = catchAsync(async (req:Request, res:Response, next: NextFunction
         expires: new Date(Date.now() + +process.env.JWT_AGE!),
         path: '/'
     });
-    res.json({success: true, data: user, token, message: 'User created successfully.'});
+    res.status(201).json({success: true, data: user, token, message: 'User created successfully.'});
 })
 
 const login = catchAsync(async (req:Request, res:Response, next: NextFunction) => {

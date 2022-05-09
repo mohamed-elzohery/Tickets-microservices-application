@@ -29,7 +29,7 @@ const errorHandler = (err: any, req: Request, res: Response, next: NextFunction)
     }
 
     //handle unique key validation
-    res.json({error, success: false});
+    res.status(error.code).json({error, success: false});
 }
 
 export {errorHandler};
