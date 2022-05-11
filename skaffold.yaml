@@ -4,8 +4,9 @@ deploy:
   kubectl:
     manifests:
       - ./infra/k8s/auth-depl.yaml
-      - ./infra/k8s/ingress-srv.yaml
+      - ./infra/k8s/client-depl.yaml
       - ./infra/k8s/auth-mongo-depl.yaml
+      - ./infra/k8s/ingress-srv.yaml
 build:
   local:
     push: false
@@ -20,3 +21,11 @@ build:
         manual:
           - dest: .
             src: './src/**/*.ts'
+    - image: melzohery/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: '**/*.js'

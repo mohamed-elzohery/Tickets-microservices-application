@@ -12,6 +12,7 @@ interface UserI {
 const userSchema = new Schema<UserI>({
     username: {
         type: String,
+        trim: true,
         minlength: [3, 'username must be 3 chars at least.'],
         required: [true, 'Username is required.'],
         maxlength: [30, 'username cannot be more than 30 chars long.']
@@ -20,6 +21,8 @@ const userSchema = new Schema<UserI>({
         type: String,
         required: [true, 'Email is required.'],
         unique: true,
+        trim: true,
+        lowercase: true,
         validate: {
             validator: function(value: string){return value.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)},
             message: 'Cannot be a valid email'
