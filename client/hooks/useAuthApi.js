@@ -5,7 +5,6 @@ import {toast} from 'react-toastify';
 const baseUrl = '/api/users'
 
 const sendAuthRequest =  async(reqPromise, onSuccess) => {
-    console.log(reqPromise)
     const toastId = toast.loading('Checking user date...');
     try{
         await reqPromise;
