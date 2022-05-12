@@ -21,7 +21,6 @@ const theme = createTheme({
   });
 
 const AppComponent = ({Component, pageProps, currentUser}) => {
-    console.log(currentUser)
     return <ThemeProvider theme={theme}>
       <Header currentUser={currentUser} />
       <Component {...pageProps}  currentUser={currentUser}/>
@@ -32,7 +31,6 @@ const AppComponent = ({Component, pageProps, currentUser}) => {
 AppComponent.getInitialProps = async appContext => {
   const client = buildClient(appContext.ctx);
   const { data } = await client.get('/api/users/currentuser');
-  console.log(data);
   let pageProps = {};
   if (App.getInitialProps) {
     pageProps = await App.getInitialProps(appContext);

@@ -1,8 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { authRouter } from "./routes/authRoutes";
-import {errorHandler} from './middlewares/app-error-handler'
+import {errorHandler,  ErrorResponse} from '@elzohery/tickets-common'
 import cookieParser from "cookie-parser";
-import { ErrorResponse } from './utils/ErrorResponse';
 
 const app = express();
 app.use(express.json());

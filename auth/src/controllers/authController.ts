@@ -1,5 +1,5 @@
-import { catchAsync } from "../middlewares/async-error-handler";
-import { ErrorResponse } from "../utils/ErrorResponse";
+import { catchAsync } from "@elzohery/tickets-common";
+import { ErrorResponse } from "@elzohery/tickets-common";
 import {User} from '../models/User';
 import {Request, Response, NextFunction} from 'express';
 import jwt from 'jsonwebtoken';

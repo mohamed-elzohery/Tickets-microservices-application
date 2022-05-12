@@ -6,26 +6,12 @@ import axios from 'axios';
 
 function App(props) {
   // console.log(props);
-  // return <h2>cnsdc</h2>
+  return <h2>cnsdc</h2>
   // console.log(props)
   // return data.currentUser ?
   //        <h1>You are logged in</h1> :
   //        <h1>You are <strong>NOT </strong>logged in</h1>
 }
 
-// export async function getServerSideProps({req: {headers}}) {
-//   try{
-//     const { data } = await axios.get('http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/users/currentuser', {
-//       headers
-//     });
-//     return { 
-//       props:  data 
-//     }
-//   }catch(error){
-//     return {
-//       props: error
-//     }
-//   }
-// }
 
 export default App;
