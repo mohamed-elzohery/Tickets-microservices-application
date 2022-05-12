@@ -5,6 +5,8 @@ import axios from 'axios';
 // import Router from 'next';
 
 function App(props) {
+  // console.log(props);
+  return <h2>cnsdc</h2>
   // console.log(props)
   // return data.currentUser ?
   //        <h1>You are logged in</h1> :
