@@ -98,6 +98,7 @@ const SignupForm = () => {
         fullWidth
         variant="contained"
         sx={{ mt: 3, mb: 2 }}
+        style={{backgroundColor: 'red', color: '#FFF'}}
       >
         Sign Up
     </Button>
@@ -105,7 +106,7 @@ const SignupForm = () => {
 
     <Grid container justifyContent="flex-end">
       <Grid item>
-        <Link href="./signin" variant="body2">
+        <Link style={{ color: 'black' }} href="./signin" variant="body2">
           Already have an account? Sign in
         </Link>
       </Grid>

@@ -5,6 +5,7 @@ export const validateName = (val) => {
     let name = val.toString().trim();
     if(name === '' ) return {isValid: false, msg: 'Name is required'};
     if(name.length < 3 ) return {isValid: false, msg: 'Name is less than 3 chars'};
+    if(name.length > 30 ) return {isValid: false, msg: 'Name is longer than 30 chars'};
     if(!name.match(usernameRegex)) return {isValid: false, msg: 'Name is not valid'};
     return {isValid: true}
 }

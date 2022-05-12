@@ -5,9 +5,18 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
+import Router from 'next/router';
+import {logout} from '../../../hooks/useAuthApi';
+const Header = ({currentUser}) => {
 
-const Header = ({currentUsers}) => {
+    const logoutHandler = async () => {
+        try{
+            await logout();
+            Router.push('/auth/signin');
+        }catch(err){
+            console.log(err);
+        }
+    }
     console.log(currentUser);
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -18,14 +27,18 @@ const Header = ({currentUsers}) => {
             edge="start"
             color="inherit"
             aria-label="menu"
-            sx={{ mr: 2 }}
           >
-            <MenuIcon />
+            <img style={{width: 50, height: 50}} src='/imgs/logo.png' alt='logoImg' />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Ticket-it
           </Typography>
-          <Button color="inherit">Login</Button>
+          {currentUser ? <Button color="inherit" onClick={logoutHandler}>Logout</Button> : 
+            <>
+                    <Button color="inherit" onClick={() => Router.push('/auth/signin')}>Login</Button>
+                    <Button color="inherit" onClick={() => Router.push('/auth/signup')}>Register</Button> 
+            </> }
+          
         </Toolbar>
       </AppBar>
     </Box>
