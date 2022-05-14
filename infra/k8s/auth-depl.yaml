@@ -20,8 +20,8 @@ spec:
           value: "m.zohery1998@gmail.com"
         - name: JWT_EXPIRE
           value: "2d"
-        - name: JWT_AGE
-          value: "172800000"
+        - name: MONGO_URI
+          value: "mongodb://auth-mongo-srv:27017/users"
 ---
 apiVersion: v1
 kind: Service

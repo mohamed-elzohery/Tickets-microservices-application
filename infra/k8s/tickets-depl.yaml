@@ -20,6 +20,8 @@ spec:
           value: "m.zohery1998@gmail.com"
         - name: JWT_EXPIRE
           value: "2d"
+        - name: MONGO_URI
+          value: "mongodb://tickets-mongo-srv:27017/tickets"
 ---
 apiVersion: v1
 kind: Service
@@ -29,7 +31,7 @@ spec:
   selector:
     app: tickets
   ports:
-  - port: 5000
-    targetPort: 5000
+  - port: 5001
+    targetPort: 5001
     name: tickets
     protocol: TCP

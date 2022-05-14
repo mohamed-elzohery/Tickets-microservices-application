@@ -8,6 +8,7 @@ declare global {
         PORT?: string;
         PWD: string;
         JWT_AGE: string;
+        MONGO_URI: string;
       }
     }
   }
