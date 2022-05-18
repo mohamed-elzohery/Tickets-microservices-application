@@ -17,7 +17,7 @@
   "author": "Elzohery",
   "license": "ISC",
   "dependencies": {
-    "@elzohery/tickets-common": "^1.0.7",
+    "@elzohery/tickets-common": "^1.1.7",
     "@types/bcrypt": "^5.0.0",
     "@types/cookie-parser": "^1.4.3",
     "@types/express": "^4.17.13",

@@ -18,8 +18,6 @@ spec:
         env:
         - name: JWT_SECRET
           value: "m.zohery1998@gmail.com"
-        - name: JWT_EXPIRE
-          value: "2d"
         - name: MONGO_URI
           value: "mongodb://tickets-mongo-srv:27017/tickets"
 ---
