@@ -2,7 +2,6 @@ import { catchAsync, ErrorResponse } from "@elzohery/tickets-common";
 import { Request, Response, NextFunction } from "express";
 import Ticket, {TicketDoc} from "../models/Ticket";
 import {FilterQuery} from 'mongoose';
-
 interface pagination {
     next?: {
         page: number;
