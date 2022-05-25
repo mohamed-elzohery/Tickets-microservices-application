@@ -2,6 +2,8 @@ import { catchAsync, ErrorResponse } from "@elzohery/tickets-common";
 import { Request, Response, NextFunction } from "express";
 import Ticket, {TicketDoc} from "../models/Ticket";
 import {FilterQuery} from 'mongoose';
+import { TicketCreatedPublisher } from "../events/publishers/ticket-created-publisher";
+import natsClient from "../nats-client";
 interface pagination {
     next?: {
         page: number;
@@ -51,6 +53,12 @@ export const createTicket = catchAsync(async (req: Request, res: Response, next:
     const {title, userId, price} = req.body;
     const ticket = Ticket.build({title, userId, price});
     await ticket.save();
+    await new TicketCreatedPublisher(natsClient.client).publish({
+        id: ticket.id,
+        title: ticket.title,
+        price: ticket.price,
+        userId: ticket.userId
+    });
     return res.status(201).json({message: 'created ticket', data: ticket, success: true});
 });
 

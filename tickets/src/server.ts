@@ -1,11 +1,13 @@
 import app from './app';
 import {connect} from 'mongoose';
+import natsClient from './nats-client';
 
 
 (async () => {
     if(process.env.JWT_SECRET && process.env.MONGO_URI){
         try{
             await connect(process.env.MONGO_URI);
+            await natsClient.connect('ticketing', 'asdasdasd', 'http://nats-srv:4222');
             app.listen(5001, () => console.log('Tickets service is running on port 5001...'));
         }catch(err: any){
             throw new Error(`Error connection to database ${err.message}`);
