@@ -4,6 +4,7 @@ import Ticket, {TicketDoc} from "../models/Ticket";
 import {FilterQuery} from 'mongoose';
 import { TicketCreatedPublisher } from "../events/publishers/ticket-created-publisher";
 import natsClient from "../nats-client";
+import { TicketUpdatedPublisher } from "../events/publishers/ticket-updated-publisher";
 interface pagination {
     next?: {
         page: number;
@@ -66,5 +67,11 @@ export const updateTicket = catchAsync(async (req: Request, res: hasTicket, next
     const {title, userId, price} = req.body;
     const ticket = res.ticket;
     const newTicket = await Ticket.updateOne(ticket as FilterQuery<TicketDoc>, {title, userId, price}, {new: true, runValidators: true});
+    new TicketUpdatedPublisher(natsClient.client).publish({
+        id: ticket!.id,
+        title,
+        userId,
+        price
+    })
     res.status(200).json({message: 'ticket is updated successfully.', data: newTicket, success: true});
 });

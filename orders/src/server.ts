@@ -3,6 +3,7 @@ import {connect} from 'mongoose';
 import natsClient from './nats-client';
 import {randomBytes} from 'crypto';
 
+
 (async () => {
     if(process.env.JWT_SECRET && process.env.MONGO_URI){
         try{
@@ -16,7 +17,7 @@ import {randomBytes} from 'crypto';
             process.on('SIGTERM', () => natsClient.client.close());
             // process.on('SIGKILL', () => natsClient.client.close());
 
-            app.listen(5001, () => console.log('Tickets service is running on port 5001...'));
+            app.listen(5002, () => console.log('Orders service is running on port 5001...'));
         }catch(err: any){
             throw new Error(`Error connection to database ${err.message}`);
         }
