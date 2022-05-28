@@ -16,14 +16,15 @@ declare global {
     }
   }
 
-const getCurrentUser = () => ( catchAsync(async (req:any, res:Response, next:NextFunction) => {
+const getCurrentUser = (req:any, res:Response, next:NextFunction) => {
     const token = req.cookies['token_uid'];
+    console.log(token);
     if(!token){
         return next(new ErrorResponse(401, 'Unauthenticated access', 'AuthErr'));
     }
     const decodedToken:any = jwt.verify(token, process.env.JWT_SECRET!);
     req.currentUser = decodedToken;
     next();
-}))
+}
 
 export {getCurrentUser};

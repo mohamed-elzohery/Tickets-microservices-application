@@ -35,7 +35,8 @@ export const getOrderById = catchAsync(async (req: Request, res: any, next: Next
     next();
 });
 
-export const getOrders = catchAsync(async (req: Request, res: any, next: NextFunction) => {
+export const getOrders = catchAsync(async (req: any, res: any, next: NextFunction) => {
+    console.log(req.currentUser);
     res.status(200).json('get All Orders');
 });
 

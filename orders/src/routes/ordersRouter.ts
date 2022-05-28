@@ -12,7 +12,7 @@ const ordersRouter = express.Router();
 // ordersRouter.route('*').all(getCurrentUser);
 
 ordersRouter.route('/')
-            .get(getOrder)
+            .get(getOrders)
             .post(createOrder);
 
 ordersRouter.route(':/id')
