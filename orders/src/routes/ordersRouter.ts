@@ -12,8 +12,8 @@ const ordersRouter = express.Router();
 // ordersRouter.route('*').all(getCurrentUser);
 
 ordersRouter.route('/')
-            .get(getOrders)
-            .post(createOrder);
+            .get(getCurrentUser, getOrders)
+            .post(getCurrentUser, createOrder);
 
 ordersRouter.route(':/id')
             .get(getOrder)

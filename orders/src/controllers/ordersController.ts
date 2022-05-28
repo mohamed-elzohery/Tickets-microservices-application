@@ -1,5 +1,10 @@
-import { catchAsync, ErrorResponse } from "@elzohery/tickets-common";
+import { catchAsync, ErrorResponse, OrderStatus } from "@elzohery/tickets-common";
 import { Request, Response, NextFunction } from "express";
+import Ticket from '../models/Ticket';
+import Order from '../models/Order';
+import mongoose from "mongoose";
+
+const EXPIRE_SECONDS = 60 * 15;
 
 interface pagination {
     next?: {
@@ -36,25 +41,44 @@ export const getOrderById = catchAsync(async (req: Request, res: any, next: Next
 });
 
 export const getOrders = catchAsync(async (req: any, res: any, next: NextFunction) => {
-    console.log(req.currentUser);
-    res.status(200).json('get All Orders');
+    const orders = await Order.find({
+        userId: req.currentUser
+    }).populate('ticket');
+
+    res.status(200).json({message: 'get All Orders', data: orders});
 });
 
 export const getOrder = catchAsync(async (req: Request, res: any, next: NextFunction) => {
     res.status(200).json({message: 'ticket is fetched successfully.', data: res.order, success: true});
 });
 
-export const createOrder = catchAsync(async (req: Request, res: any, next: NextFunction) => {
-    // const {title, userId, price} = req.body;
-    // const ticket = Ticket.build({title, userId, price});
-    // await ticket.save();
-    // await new TicketCreatedPublisher(natsClient.client).publish({
-    //     id: ticket.id,
-    //     title: ticket.title,
-    //     price: ticket.price,
-    //     userId: ticket.userId
-    // });
-    return res.status(201).json({message: 'created order'});
+export const createOrder = catchAsync(async (req: any, res: any, next: NextFunction) => {
+    const {ticketId} = req.body;
+    if(!mongoose.isValidObjectId(ticketId)) return next(new ErrorResponse(400, 'not valid ticket id', 'ticketId'));
+
+    const ticket = await Ticket.findById(ticketId);
+    if(!ticket){
+        return next(new ErrorResponse(404, 'Ticket not found', 'ticket'));
+    }
+
+    const isReserved = await ticket.isReserved();
+
+    if(isReserved){
+        return next(new ErrorResponse(400, 'Ticket is already reserved', 'ticket'));
+    }
+
+    const expiration = new Date();
+    expiration.setSeconds(expiration.getSeconds() + EXPIRE_SECONDS);
+
+    const order = await Order.build({
+        expiresAt: expiration,
+        status: OrderStatus.CREATED,
+        userId: req.currentUser,
+        ticket
+    })
+
+    await order.save();
+    return res.status(201).json({message: 'created order', data: order});
 });
 
 export const deleteOrder = catchAsync(async (req: Request, res: any, next: NextFunction) => {
