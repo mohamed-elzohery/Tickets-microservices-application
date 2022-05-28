@@ -3,20 +3,19 @@ import {
     getOrders,
     createOrder,
     getOrder,
-    deleteOrder
+    cancelOrder
 } from '../controllers/ordersController';
 import {getCurrentUser} from '../../middlewares/current-user'
 import { advResults } from '@elzohery/tickets-common';
 const ordersRouter = express.Router();
 
-// ordersRouter.route('*').all(getCurrentUser);
-
+ordersRouter.use(getCurrentUser)
 ordersRouter.route('/')
-            .get(getCurrentUser, getOrders)
-            .post(getCurrentUser, createOrder);
+            .get(getOrders)
+            .post(createOrder);
 
-ordersRouter.route(':/id')
-            .get(getOrder)
-            .delete(deleteOrder)
+ordersRouter.route(':/id').get(getOrder)
+
+ordersRouter.route(':/id/cancel').post(cancelOrder)
 
 export default ordersRouter;

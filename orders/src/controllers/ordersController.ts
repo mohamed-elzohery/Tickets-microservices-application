@@ -30,16 +30,6 @@ interface AdvancedResponse extends Response {
 //     ticket?: TicketDoc
 // }
 
-export const getOrderById = catchAsync(async (req: Request, res: any, next: NextFunction) => {
-    // const {id: ticketId} = req.params;
-    // const ticket = await Ticket.findById(ticketId)! as TicketDoc;
-    // if(ticket === null){
-    //     next(new ErrorResponse(404, 'ticket not found', 'ticket'));
-    // }
-    // res.ticket = ticket;
-    next();
-});
-
 export const getOrders = catchAsync(async (req: any, res: any, next: NextFunction) => {
     const orders = await Order.find({
         userId: req.currentUser
@@ -48,8 +38,12 @@ export const getOrders = catchAsync(async (req: any, res: any, next: NextFunctio
     res.status(200).json({message: 'get All Orders', data: orders});
 });
 
-export const getOrder = catchAsync(async (req: Request, res: any, next: NextFunction) => {
-    res.status(200).json({message: 'ticket is fetched successfully.', data: res.order, success: true});
+export const getOrder = catchAsync(async (req: any, res: any, next: NextFunction) => {
+    const {orderId} = req.body;
+    const order = await Order.findById(orderId).populate('ticket');
+    if(!order) return next(new ErrorResponse(404, 'Order not found', 'order'));
+    if(order.userId !== req.currentUser) return next(new ErrorResponse(403, 'Unauthorized user access', 'order'));
+    res.status(200).json({message: 'order is fetched successfully.', data: order, success: true});
 });
 
 export const createOrder = catchAsync(async (req: any, res: any, next: NextFunction) => {
@@ -70,7 +64,7 @@ export const createOrder = catchAsync(async (req: any, res: any, next: NextFunct
     const expiration = new Date();
     expiration.setSeconds(expiration.getSeconds() + EXPIRE_SECONDS);
 
-    const order = await Order.build({
+    const order =  Order.build({
         expiresAt: expiration,
         status: OrderStatus.CREATED,
         userId: req.currentUser,
@@ -81,15 +75,12 @@ export const createOrder = catchAsync(async (req: any, res: any, next: NextFunct
     return res.status(201).json({message: 'created order', data: order});
 });
 
-export const deleteOrder = catchAsync(async (req: Request, res: any, next: NextFunction) => {
-    // const {title, userId, price} = req.body;
-    // const ticket = res.ticket;
-    // const newTicket = await Ticket.updateOne(ticket as FilterQuery<TicketDoc>, {title, userId, price}, {new: true, runValidators: true});
-    // new TicketUpdatedPublisher(natsClient.client).publish({
-    //     id: ticket!.id,
-    //     title,
-    //     userId,
-    //     price
-    // })
+export const cancelOrder = catchAsync(async (req: any, res: any, next: NextFunction) => {
+    const {orderId} = req.body;
+    const order = await Order.findById(orderId).populate('ticket');
+    if(!order) return next(new ErrorResponse(404, 'Order not found', 'order'));
+    if(order.userId !== req.currentUser) return next(new ErrorResponse(403, 'Unauthorized user access', 'order'));
+    order.status = OrderStatus.CANCELLED;
+    await order.save();
     res.status(200).json({message: 'order is deleted successfully.'});
 });
